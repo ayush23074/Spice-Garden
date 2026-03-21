@@ -1,0 +1,22 @@
+{% extends "Base.html" %}
+{% block start %}
+    <h1 align="center">Our Menu</h1>
+    <h4 align = "center"><p>Discover our delicious selection of dishes</p></h4>
+    <div align="center">
+        <table border = "3" class="table table-hover">
+            <tr><th>Dish Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            </tr>
+            {% for items in dishes %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ items.Dish }}</td>
+                <td>{{ items.Description }}</td>
+                <td>{{ items.Price }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "Base.html" %}
+{% block start %}
+<div class="container-lg">
+  <div class="mt-5">
+    <div class="mx-auto col-6">
+      <form>
+      <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Search Food</label>
+    <input name="Search"  type="text" class="form-control" >
+      </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    </form>
+  </div>
+  <table class="table table-bordered mt-5" style="border-color: black;">
+    <thead>
+      <tr>
+        <th scope="col">S. No.</th>
+        <th scope="col">Receipe Name</th>
+        <th scope="col">Receipe Description</th>
+        <th scope="col">Receipe Image</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in receipe %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ item.receipe_name }}</td>
+        <td>{{ item.receipe_Description }}</td>
+        <td><img src="/media/{{ item.receipe_image }}" width="100px"></td>
+        <td>
+          <a href="{% url 'delete_receipe' id=item.id %}" class="btn btn-danger m-2">Delete</a><br>
+          <a href="{% url 'update_receipe' id=item.id %}" class="btn btn-success">Update</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

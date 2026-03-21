@@ -1,0 +1,67 @@
+{% extends "Base.html" %}
+{% block start %}
+
+<style>
+    .hero {
+        height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(135deg, #ffecd2, #fcb69f);
+        border-radius: 20px;
+        margin: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 25px;
+    }
+
+    .btn-custom {
+        padding: 10px 20px;
+        border-radius: 25px;
+        margin: 5px;
+        border: none;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(45deg, #ff6a00, #ee0979);
+        color: white;
+    }
+
+    .btn-outline-custom {
+        background: white;
+        border: 2px solid #ee0979;
+        color: #ee0979;
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+</style>
+
+<div class="hero">
+    <div>
+        <h1>🍽 Welcome to Spice Garden</h1>
+        <p>Authentic flavors, unforgettable experience</p>
+
+        <div>
+            <a href="{% url 'Register' %}" class="btn btn-custom btn-primary-custom">Register</a>
+            <a href="{% url 'Login' %}" class="btn btn-custom btn-outline-custom">Login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
