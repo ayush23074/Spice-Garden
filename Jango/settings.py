@@ -16,6 +16,15 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ENV_FILE = BASE_DIR / ".env"
+if ENV_FILE.exists():
+    for line in ENV_FILE.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip().strip("'\""))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -80,12 +89,58 @@ WSGI_APPLICATION = 'Jango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DB_PROFILE = os.getenv("DB_PROFILE", "local").lower()
+
+
+def get_db_value(key: str, default: str = "") -> str:
+    """
+    Read DB settings from the selected profile first, then fallback to generic DB_*.
+    Example order for key='HOST' when DB_PROFILE='prod':
+    1) PROD_DB_HOST
+    2) DB_HOST
+    3) default
+    """
+    return os.getenv(f"{DB_PROFILE.upper()}_DB_{key}", os.getenv(f"DB_{key}", default))
+
+
+DB_ENGINE = get_db_value("ENGINE", "sqlite").lower()
+
+if DB_ENGINE == "postgresql":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": get_db_value("NAME", "jango_db"),
+            "USER": get_db_value("USER", "postgres"),
+            "PASSWORD": get_db_value("PASSWORD", ""),
+            "HOST": get_db_value("HOST", "127.0.0.1"),
+            "PORT": get_db_value("PORT", "5432"),
+        }
     }
-}
+elif DB_ENGINE == "mysql":
+    mysql_options = {}
+    db_ssl_ca = get_db_value("SSL_CA", "").strip()
+    if db_ssl_ca:
+        mysql_options["ssl"] = {"ca": db_ssl_ca}
+
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": get_db_value("NAME", "jango_db"),
+            "USER": get_db_value("USER", "root"),
+            "PASSWORD": get_db_value("PASSWORD", ""),
+            "HOST": get_db_value("HOST", "127.0.0.1"),
+            "PORT": get_db_value("PORT", "3306"),
+            "OPTIONS": mysql_options,
+            "CONN_MAX_AGE": int(get_db_value("CONN_MAX_AGE", "60")),
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
