@@ -1,0 +1,9 @@
+[build]
+command = "echo \"Proxying Netlify traffic to Render Django backend\""
+publish = "."
+
+[[redirects]]
+from = "/*"
+to = "https://jango-app.onrender.com/:splat"
+status = 200
+force = true
