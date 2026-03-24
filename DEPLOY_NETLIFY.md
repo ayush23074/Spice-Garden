@@ -21,7 +21,7 @@ For this codebase, the reliable setup is:
 
 1. In Netlify, add a new project from this repo.
 2. Build command can stay empty (or use value from `netlify.toml`).
-3. Publish directory: `.` (already set in `netlify.toml`).
+3. Netlify build base is `netlify` and publish directory is `.` (already set in `netlify.toml`).
 4. Deploy.
 
 `netlify.toml` proxies all paths to:
@@ -29,6 +29,10 @@ For this codebase, the reliable setup is:
 `https://jango-app.onrender.com`
 
 If your Render service URL is different, update `netlify.toml` accordingly.
+
+## Important: Deploy branch
+
+Set Netlify to deploy the branch that contains `netlify.toml` changes (`old-code` in this repo right now), or merge these changes into `main`.
 
 ## 3) Verify
 
