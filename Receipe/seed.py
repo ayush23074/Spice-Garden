@@ -3,6 +3,22 @@ from .models import *
 import random
 fake = Faker()
 
+def employee_rating(n=10):
+    try:
+        
+        employee_obj = Employee.objects.all()
+        for employee in employee_obj:
+            activity_obj = Activity.objects.all()
+            for activity in activity_obj:
+                rating = random.randint(1, 5)
+                EmployeeRating.objects.create(
+                    employee=employee,
+                    activity=activity,
+                    rating=rating
+                )
+    except Exception as e:
+        print(e)
+
 def seed_db(n=10):
     try:
         for _ in range(n):

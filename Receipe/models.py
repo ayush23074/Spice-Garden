@@ -26,6 +26,15 @@ class Employee_ID(models.Model):
     class Meta:
         ordering = ['employee_id']
 
+class Activity(models.Model):
+    activity = models.CharField(max_length=100)
+
+    def __str__(self)-> str:
+        return self.activity
+    
+    class Meta:
+        ordering = ['activity']
+
 class Employee(models.Model):
     department = models.ForeignKey(Department, related_name='depart', on_delete=models.SET_NULL, null = True, blank = True)
     employee_id = models.ForeignKey(Employee_ID, related_name='employeeid', on_delete=models.SET_NULL, null = True, blank = True)
@@ -41,3 +50,13 @@ class Employee(models.Model):
     class Meta:
         ordering = ['employee_name']
         verbose_name = "Employee"
+
+class EmployeeRating(models.Model):
+    employee = models.ForeignKey(Employee, related_name = 'EmployeeRating' , on_delete = models.SET_NULL, null = True, blank = True)
+    activity = models.ForeignKey(Activity , related_name = 'Activity' , on_delete= models.SET_NULL, null = True, blank = True   )
+    rating = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.employee.employee_name} - {self.activity.activity} - {self.rating}"
+    class Meta:
+        unique_together = ['employee', 'activity']
