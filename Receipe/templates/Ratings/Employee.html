@@ -1,0 +1,106 @@
+{% extends "Base.html" %}
+{% block start %}
+<div class="container mt-5">
+  <form class="mb-4">
+  <div class="row">
+    <div class ="col-md-6">
+      <input class="form-control" name="search" placeholder="Search">
+  
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-success">Search</button>
+    </div>
+  </div>
+  </form>
+
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">S. No.</th>
+                <th scope="col">Employee's ID</th>
+                <th scope="col">Employee's Name</th>
+                <th scope="col">Department</th>
+                <th scope="col">Employee's Email</th>
+                <th scope="col">Employee's DOB</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in queryset %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.employee_name }}</td>
+                <td>{{ employee.department.department }}</td>
+                <td>{{ employee.employee_email }}</td>
+                <td>{{ employee.employee_dob }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="flex justify-center mt-8">
+  <nav class="flex items-center gap-1 bg-white/80 backdrop-blur-md shadow-lg rounded-2xl px-3 py-2 border">
+
+    <!-- First -->
+    {% if queryset.has_previous %}
+      <a href="?page=1"
+         class="px-3 py-1.5 text-sm rounded-lg text-gray-600 hover:bg-gray-200 transition">
+        «
+      </a>
+    {% else %}
+      <span class="px-3 py-1.5 text-sm text-gray-300 cursor-not-allowed">«</span>
+    {% endif %}
+
+    <!-- Previous -->
+    {% if queryset.has_previous %}
+      <a href="?page={{ queryset.previous_page_number }}"
+         class="px-3 py-1.5 text-sm rounded-lg text-gray-600 hover:bg-gray-200 transition">
+        ‹
+      </a>
+    {% else %}
+      <span class="px-3 py-1.5 text-sm text-gray-300 cursor-not-allowed">‹</span>
+    {% endif %}
+
+    <!-- Page Numbers (smart range) -->
+    {% for num in queryset.paginator.page_range %}
+      {% if num >= queryset.number|add:'-2' and num <= queryset.number|add:'2' %}
+        
+        {% if queryset.number == num %}
+          <span class="px-3 py-1.5 text-sm font-semibold text-white bg-blue-500 rounded-lg shadow">
+            {{ num }}
+          </span>
+        {% else %}
+          <a href="?page={{ num }}"
+             class="px-3 py-1.5 text-sm rounded-lg text-gray-700 hover:bg-gray-200 transition">
+            {{ num }}
+          </a>
+        {% endif %}
+
+      {% endif %}
+    {% endfor %}
+
+    <!-- Next -->
+    {% if queryset.has_next %}
+      <a href="?page={{ queryset.next_page_number }}"
+         class="px-3 py-1.5 text-sm rounded-lg text-gray-600 hover:bg-gray-200 transition">
+        ›
+      </a>
+    {% else %}
+      <span class="px-3 py-1.5 text-sm text-gray-300 cursor-not-allowed">›</span>
+    {% endif %}
+
+    <!-- Last -->
+    {% if queryset.has_next %}
+      <a href="?page={{ queryset.paginator.num_pages }}"
+         class="px-3 py-1.5 text-sm rounded-lg text-gray-600 hover:bg-gray-200 transition">
+        »
+      </a>
+    {% else %}
+      <span class="px-3 py-1.5 text-sm text-gray-300 cursor-not-allowed">»</span>
+    {% endif %}
+
+  </nav>
+</div>
+{% endblock %}

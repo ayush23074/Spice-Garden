@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
-from .models import Recipie
+from .models import Recipie, Employee
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 # Create your views here.
 @login_required(login_url="/Login/")
@@ -120,3 +121,21 @@ def Register_page(request):
     
 
     return render(request, "Register.html", context={"page": "Register"})
+from django.db.models import Q
+
+def get_Employee(request):
+    queryset = Employee.objects.all()
+
+    if request.GET.get("search"):
+        search = request.GET.get("search")
+        query = Q(employee_name__icontains=search) | \
+            Q(department__department__icontains=search)
+        if search.isdigit():
+            query |= Q(employee_id=int(search))
+        queryset = queryset.filter(query)
+
+    paginator = Paginator(queryset, 10)  # Show 25 contacts per page.
+
+    page_number = request.GET.get("page",1)
+    page_obj = paginator.get_page(page_number)
+    return render(request,"Ratings/Employee.html",context = {"page": "Employee Rating","queryset": page_obj})

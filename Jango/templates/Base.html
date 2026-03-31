@@ -109,10 +109,14 @@
         <a class="nav-link" href="{% url 'View_Receipe' %}">View Receipe</a>
         </li>
 
+        <li>  
+          <a class="nav-link" href="{% url 'Employee' %}">Employee Ratings</a>
+        </li>
 
         <li class="nav-item">
           <a class="nav-link text-danger" href="{% url 'Logout' %}">Logout</a>
         </li>
+        
         {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'Login' %}">Login</a>

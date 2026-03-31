@@ -31,6 +31,8 @@ urlpatterns = [
     path('delete_receipe/<id>/', delete_receipe, name='delete_receipe'),
     path('update_receipe/<id>/', update_receipe, name='update_receipe'),
 
+    path('Employee/',get_Employee, name = "Employee"),
+
 ]
 #this below has to be written to workon files or show fles in development mode
 from django.conf import settings
