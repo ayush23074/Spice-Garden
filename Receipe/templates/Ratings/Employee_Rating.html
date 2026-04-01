@@ -1,0 +1,30 @@
+{% extends "Base.html" %}
+{% block start %}
+<div class="container mt-5">
+    <h4>Rank :</h4>
+    <h4>Overall Rating : {{ overall_rating|floatformat:2 }}</h4><br><br>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">S. No.</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ratings in queryset %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  {{ ratings.activity.activity }}
+                </td>
+                <td>{{ ratings.rating }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

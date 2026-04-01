@@ -29,7 +29,10 @@
             {% for employee in queryset %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ employee.id }}</td>
+                <td><a href="{% url 'see_rating' employee.id %}">
+                  {{ employee.id }}
+                </a>
+                </td>
                 <td>{{ employee.employee_name }}</td>
                 <td>{{ employee.department.department }}</td>
                 <td>{{ employee.employee_email }}</td>

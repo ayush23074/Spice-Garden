@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Recipie, Employee
+from .models import *
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
@@ -121,7 +121,8 @@ def Register_page(request):
     
 
     return render(request, "Register.html", context={"page": "Register"})
-from django.db.models import Q
+
+from django.db.models import Q,Avg
 
 def get_Employee(request):
     queryset = Employee.objects.all()
@@ -139,3 +140,17 @@ def get_Employee(request):
     page_number = request.GET.get("page",1)
     page_obj = paginator.get_page(page_number)
     return render(request,"Ratings/Employee.html",context = {"page": "Employee Rating","queryset": page_obj})
+
+
+def see_rating(request,id):
+    employee = Employee.objects.filter(id =id)
+    queryset = EmployeeRating.objects.filter(employee__id = id)
+    overall_rating = queryset.aggregate(Avg("rating"))["rating__avg"]
+
+
+    if request.method == "POST":
+        data = request.POST
+        activity = data.get("activity")
+        rating = data.get("rating")
+
+    return render(request , "Ratings/Employee_Rating.html", context = {"page": "Employee Rating","queryset": queryset, "overall_rating": overall_rating})

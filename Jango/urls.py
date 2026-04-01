@@ -32,6 +32,7 @@ urlpatterns = [
     path('update_receipe/<id>/', update_receipe, name='update_receipe'),
 
     path('Employee/',get_Employee, name = "Employee"),
+    path('see_rating/<id>/', see_rating, name = "see_rating"),
 
 ]
 #this below has to be written to workon files or show fles in development mode
